@@ -1,6 +1,6 @@
 # midpoint_circle_algorithm
 ```
-삼각함수로 그릴 때 장점:
+삼각함수로 그릴 때 장점:  
 1.	간단한 구현 
 2.	연속성(매끄럽고 연속적인 곡선)
 3.	유연성(각도를 조절하여 다양한 원을 그릴 수 있음)
@@ -21,55 +21,55 @@
 ```
 ## Midpoint circle Algorithm
 
-아이디어 : 원의 대칭성을 이용해서 원의 1/8만 그린 후 대칭되는 다른 7곳의 대칭점에 점을 계속 따라찍어 원을 완성할 수 있음 
+아이디어 : 원의 대칭성을 이용해서 원의 1/8만 그린 후 대칭되는 다른 7곳의 대칭점에 점을 계속 따라찍어 원을 완성할 수 있음  
 
-이 함수에서의 시작점은 x = 반지름, y = 0이므로 원의 오른쪽 끝에서 시작할 것이고 y축 방향으로 이동할것이다. (y증가 x감소)
+이 함수에서의 시작점은 x = 반지름, y = 0이므로 원의 오른쪽 끝에서 시작할 것이고 y축 방향으로 이동할것이다. (y증가 x감소)  
 
-또한 45도까지 점을 찍었다면 x = y가 성립하고(1/8지점) 함수를 종료한다.
+또한 45도까지 점을 찍었다면 x = y가 성립하고(1/8지점) 함수를 종료한다.  
 
-1/8을 기준으로 하는 이유 : 45도 일 때 y=x를 기울기로 하는 선과 점이 만남 -> while(x>=y) 꼴로 간단히 while을 만들 수 있음 
+1/8을 기준으로 하는 이유 : 45도 일 때 y=x를 기울기로 하는 선과 점이 만남 -> while(x>=y) 꼴로 간단히 while을 만들 수 있음   
 
-## 원을 찍는 위치 선정 ( midpoint ) 
+## 원을 찍는 위치 선정 ( midpoint )   
 
-결정변수 F 를 사용함 
-결정변수 F는 완벽한 원을 그리기 위한 다음 점의 위치를 나타냄 
+결정변수 F 를 사용함   
+결정변수 F는 완벽한 원을 그리기 위한 다음 점의 위치를 나타냄  
 ```
 F=(x−0.5)2+(y+1)2−r2
 ```
-해당 방정식을 사용해서 구한 완벽한 원의 테두리 F를 따라서 각 점의 위치를 조정하는 것이 미드포인트 알고리즘의 핵심이므로 x와 y를 동일하게 증감시키지 않음 (픽셀로 그릴 경우 완벽한 원을 그릴 수 없기 때문에 테두리에 맞춰 원을 그림 / 점이라는 특수성) 
+해당 방정식을 사용해서 구한 완벽한 원의 테두리 F를 따라서 각 점의 위치를 조정하는 것이 미드포인트 알고리즘의 핵심이므로 x와 y를 동일하게 증감시키지 않음 (픽셀로 그릴 경우 완벽한 원을 그릴 수 없기 때문에 테두리에 맞춰 원을 그림 / 점이라는 특수성)  
 
-점이 완벽한 원의 경로 안쪽에 있다면 F < 0 이고
-점이 완벽한 원의 경로 바깥쪽에 있다면 F >= 0 이 될 것임.
+점이 완벽한 원의 경로 안쪽에 있다면 F < 0 이고  
+점이 완벽한 원의 경로 바깥쪽에 있다면 F >= 0 이 될 것임.  
 
-따라서 원의 경로보다 바깥에 점이 위치한다면 X를 감소시켜 이상적인 원의 경로에 더 가깝에 이동시키고 
-안쪽에 위치한다면 y만 증가시키고 결정변수를 업데이트함 
+따라서 원의 경로보다 바깥에 점이 위치한다면 X를 감소시켜 이상적인 원의 경로에 더 가깝에 이동시키고   
+안쪽에 위치한다면 y만 증가시키고 결정변수를 업데이트함   
 
 
 ## source code(func)
-void OLED_Circle(int x_start, int y_start, int r, uint8_t type)
-{
-  int x = r; // 초기 점 (r, 0)
-  int y = 0; // 초기 점 (r, 0)의 y좌표
-  int F = -2 * r + 3; // 결정 변수 초기화
-  while (x >= y) // x가 y보다 크거나 같을 때까지 반복 (45도까지)
-  {
-    // 8개의 대칭점을 그리기
-    OLED_Set_Point(x_start + x, y_start + y, type); // (x, y)
-    OLED_Set_Point(x_start - x, y_start + y, type); // (-x, y)
-    OLED_Set_Point(x_start + x, y_start - y, type); // (x, -y)
-    OLED_Set_Point(x_start - x, y_start - y, type); // (-x, -y)
-    OLED_Set_Point(x_start + y, y_start + x, type); // (y, x)
-    OLED_Set_Point(x_start - y, y_start + x, type); // (-y, x)
-    OLED_Set_Point(x_start + y, y_start - x, type); // (y, -x)
-    OLED_Set_Point(x_start - y, y_start - x, type); // (-y, -x)
+void OLED_Circle(int x_start, int y_start, int r, uint8_t type)  
+{  
+  int x = r; // 초기 점 (r, 0)   
+  int y = 0; // 초기 점 (r, 0)의 y좌표  
+  int F = -2 * r + 3; // 결정 변수 초기화  
+  while (x >= y) // x가 y보다 크거나 같을 때까지 반복 (45도까지)  
+  {  
+    // 8개의 대칭점을 그리기  
+    OLED_Set_Point(x_start + x, y_start + y, type); // (x, y)  
+    OLED_Set_Point(x_start - x, y_start + y, type); // (-x, y)  
+    OLED_Set_Point(x_start + x, y_start - y, type); // (x, -y)  
+    OLED_Set_Point(x_start - x, y_start - y, type); // (-x, -y)  
+    OLED_Set_Point(x_start + y, y_start + x, type); // (y, x)  
+    OLED_Set_Point(x_start - y, y_start + x, type); // (-y, x)  
+    OLED_Set_Point(x_start + y, y_start - x, type); // (y, -x)  
+    OLED_Set_Point(x_start - y, y_start - x, type); // (-y, -x)  
 
-    // 결정 변수 업데이트
-    if (F >= 0)
-    {
-      x--; // x를 감소시켜 x축 방향으로 한 칸 안쪽으로 이동
-      F -= 4 * x; // 결정 변수를 업데이트
-    }
-    y++; // y를 증가시켜 y축 방향으로 한 칸 이동
-    F += 4 * y + 2; // 결정 변수를 업데이트
-  }
-}
+    // 결정 변수 업데이트  
+    if (F >= 0)  
+    {  
+      x--; // x를 감소시켜 x축 방향으로 한 칸 안쪽으로 이동  
+      F -= 4 * x; // 결정 변수를 업데이트  
+    }  
+    y++; // y를 증가시켜 y축 방향으로 한 칸 이동  
+    F += 4 * y + 2; // 결정 변수를 업데이트  
+  }  
+}  
